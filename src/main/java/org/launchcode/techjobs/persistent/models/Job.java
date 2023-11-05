@@ -3,47 +3,56 @@ package org.launchcode.techjobs.persistent.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
+import org.launchcode.techjobs.persistent.models.Employer;
+import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
 @Entity
-public class Job {
+public class Job extends AbstractEntity{
 
-    @Id
-    @GeneratedValue
-    private int id;
+//    @Id
+//    @GeneratedValue
+//    private int id;
+//
+//    private String name;
 
-    private String name;
-    private String employer;
+    @ManyToOne
+    //@NotNull(message="Employer is required!") this not null caused my app to fail countless times!
+    private Employer employer;
+
     private String skills;
 
+
+
+
+    // Initialize the id and value fields.
+    public Job(Employer employer, String skills) {
+        //super();
+        this.employer = employer;
+        this.skills = skills;
+    }
 
     public Job() {
     }
 
-    // Initialize the id and value fields.
-    public Job(String anEmployer, String someSkills) {
-        super();
-        this.employer = anEmployer;
-        this.skills = someSkills;
-    }
-
     // Getters and setters.
     
-    public String getName() {
-        return name;
-    }
+//    public String getName() {
+//        return name;
+//    }
+//
+//    public void setName(String name) {
+//        this.name = name;
+//    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getEmployer() {
+    public Employer getEmployer() {
         return employer;
     }
 
-    public void setEmployer(String employer) {
+    public void setEmployer(Employer employer) {
         this.employer = employer;
     }
 

@@ -20,7 +20,7 @@ public abstract class AbstractEntity {
 
     @Valid
     @NotBlank (message = "This field cannot be left blank!")
-    @Size(min=1, max=200, message = "Please make sure field is complete.")
+    @Size(min=2, max=200, message = "Please make sure field is complete.")
     private String name;
 
     public int getId() {

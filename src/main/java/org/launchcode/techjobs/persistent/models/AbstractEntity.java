@@ -2,6 +2,7 @@ package org.launchcode.techjobs.persistent.models;
 
 
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.validation.Valid;
@@ -16,6 +17,9 @@ public abstract class AbstractEntity {
 
     @Id
     @GeneratedValue
+    //(strategy = GenerationType.IDENTITY) breaks the code if uncommented here was an unexpected error (type=Internal Server Error, status=500).
+    //could not execute statement [Field 'id' doesn't have a default value] [insert into skill (description,name) values (?,?)]
+    //org.springframework.orm.jpa.JpaSystemException: could not execute statement [Field 'id' doesn't have a default value] [insert into skill (description,name) values (?,?)]
     private int id;
 
     @Valid

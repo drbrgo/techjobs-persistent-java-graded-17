@@ -51,7 +51,7 @@ public class HomeController {
     }
 
     @PostMapping("add")
-    public String processAddJobForm(@ModelAttribute @Valid Job job, Errors errors, Model model, @RequestParam(required = false) Integer employerId,
+    public String processAddJobForm(@ModelAttribute @Valid Job job, Errors errors, Model model, @RequestParam(defaultValue = "0") int employerId,
                                     @RequestParam(required = false) List<Integer> skills) {
 //        @RequestParam(name="employer_id" employerId
 
@@ -59,14 +59,15 @@ public class HomeController {
 	    model.addAttribute("title", "Add Job");
             return "add";
         }
-        if(employerId!=null) {
+        if(employerId!=0) {
             Optional<Employer> result = employerRepository.findById(employerId);
             if (result.isPresent()) {
                 Employer employer = result.get();
                 job.setEmployer(employer);
                 model.addAttribute("employers", employer);
             }
-        if(skills!=null) {
+        }
+       if(skills!=null) {
             List<Skill> skillObjs = (List<Skill>) skillRepository.findAllById(skills);
             job.setSkills(skillObjs);
             model.addAttribute("skills", skillObjs);
@@ -74,7 +75,7 @@ public class HomeController {
         model.addAttribute("jobs", job);
         //the line above seems to do nothing at all... index template fails to display job
         jobRepository.save(job);
-        }
+
 
 //        }
 //        model.addAttribute("employers", employerRepository.findById(employerId));
@@ -87,7 +88,12 @@ public class HomeController {
     @GetMapping("view/{jobId}")
     public String displayViewJob(Model model, @PathVariable int jobId) {
 
-            model.addAttribute("job", jobRepository.findById(jobId));
+        Optional<Job> result = jobRepository.findById(jobId);
+
+        if(result.isPresent()){
+            Job job = result.get();
+            model.addAttribute("job", job);
+        }
 
             return "view";
     }
